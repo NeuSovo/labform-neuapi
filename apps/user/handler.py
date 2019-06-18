@@ -67,3 +67,15 @@ def get_user_info(consuserid):
     print(request_url, post_data)
     res = requests.post(url=request_url, data=post_data)
     return res.json()
+
+
+## send user_info to lab_form
+def send_user_info(user_info):
+    request_url = app.config['SEND_USER_iNFO_API']
+    res = requests.get(request_url, params=user_info)
+    try:
+        res = res.json()
+    except Exception as e:
+        return {'msg': 'failed', 'e': e}
+    
+    return res

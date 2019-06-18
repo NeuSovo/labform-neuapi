@@ -27,7 +27,7 @@ def get_lab_list_info(labid=None, labtypeid=None):
     return res.json()
 
 
-def get_lab_schedule_info(labid):
+def get_lab_schedule_info(labid, usedate):
     request_url = app.config['BASE_URL'] + app.config['LAB_SCHEDULE_LIST_API']
     consid = app.config['CONSID']
     accesskey = app.config['ACCESSKEY']
@@ -42,7 +42,18 @@ def get_lab_schedule_info(labid):
     }
     if labid:
         post_data['labid'] = labid
+    if usedate:
+        post_data['usedate'] = usedate
 
     res = requests.post(url=request_url, data=post_data)
-    print (res.text)
+    return res.json()
+
+def handler_add_lab_open(data):
+    request_url = app.config['BASE_URL'] + app.config['ADD_LAB_OPEN_API']
+    consid = app.config['CONSID']
+    accesskey = app.config['ACCESSKEY']
+    timestamp = str(int(time.time()))
+    sign = sign_md5(accesskey + timestamp + data['userid '])
+    data['sign'] = sign
+    res = requests.post(url=request_url, data=post_data)
     return res.json()
